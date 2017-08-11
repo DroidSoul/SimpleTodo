@@ -1,6 +1,8 @@
 package com.codepath.simpletodo;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,12 +19,14 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<String> items;
-    ArrayAdapter<String> itemsAdapter;
+    ArrayList<Products> items;
+    UsersAdapter itemsAdapter;
     ListView lvItems;
     static final int REQUEST_CODE = 1;
+    MyDBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +34,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         lvItems = (ListView)findViewById(R.id.lvItems);
 //        items = new ArrayList<>();
+        dbHandler = new MyDBHandler(this, null, null, 3);
         readItems();
 //        items.set(1, "test");
-        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new UsersAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
 //        items.add("first item");
         setupListViewListener();
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public void onAddItem(View v) {
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
-        itemsAdapter.add(itemText);
+        itemsAdapter.add(new Products(itemText, "1", System.currentTimeMillis()));
         etNewItem.setText("");
         writeItems();
     }
@@ -61,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent i = new Intent(MainActivity.this, EditItemActivity.class);
                         i.putExtra("pos", position);
-                        i.putExtra("itemContent", items.get(position));
+                        i.putExtra("itemContent", items.get(position).get_productname());
+                        i.putExtra("itemPriority", items.get(position).get_priority());
+                        i.putExtra("itemDuedate", items.get(position).get_time());
 //                        items.remove(position);
 //                        itemsAdapter.notifyDataSetChanged();
 //                        writeItems();
@@ -75,16 +82,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             String name = data.getExtras().getString("updatedItem");
+            String pri = data.getExtras().getString("updatedPriority");
+            long duedate = data.getExtras().getLong("updatedDuedate");
             int code = data.getExtras().getInt("code", 0);
-            items.set(code, name);
-//            items.add(code, name);
+//           if (items.get(code).get_time() <= duedate) {
+            items.set(code, new Products(name, pri, duedate));
             itemsAdapter.notifyDataSetChanged();
             writeItems();
+//            }
+//            items.add(code, name);
         }
     }
 
 
-    private void readItems() {
+/*    private void readItems() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
         try {
@@ -92,14 +103,23 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             items = new ArrayList<String>();
         }
+    }*/
+    private void readItems() {
+        items = dbHandler.databaseToList();
     }
-    private void writeItems() {
+/*    private void writeItems() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
         try {
             FileUtils.writeLines(todoFile, items);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }*/
+    private void writeItems() {
+        dbHandler.deleteAll();
+        for (Products p : items) {
+            dbHandler.addProduct(p);
         }
     }
 }
