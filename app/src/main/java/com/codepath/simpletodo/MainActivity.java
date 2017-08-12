@@ -3,6 +3,7 @@ package com.codepath.simpletodo;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,7 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EditItemDialogFragment.onFragmentResult{
     ArrayList<Products> items;
     UsersAdapter itemsAdapter;
     ListView lvItems;
@@ -64,21 +65,31 @@ public class MainActivity extends AppCompatActivity {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-                        i.putExtra("pos", position);
-                        i.putExtra("itemContent", items.get(position).get_productname());
-                        i.putExtra("itemPriority", items.get(position).get_priority());
-                        i.putExtra("itemDuedate", items.get(position).get_time());
+//                        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
+//                        i.putExtra("pos", position);
+//                        i.putExtra("itemContent", items.get(position).get_productname());
+//                        i.putExtra("itemPriority", items.get(position).get_priority());
+//                        i.putExtra("itemDuedate", items.get(position).get_time());
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("pos", position);
+                        bundle.putString("itemContent", items.get(position).get_productname());
+                        bundle.putString("itemPriority", items.get(position).get_priority());
+                        bundle.putLong("itemDuedate", items.get(position).get_time());
+                        EditItemDialogFragment fragobj = EditItemDialogFragment.newInstance("title");
+//                        EditItemDialogFragment fragobj = new EditItemDialogFragment();
+                        FragmentManager fm = getSupportFragmentManager();
+                        fragobj.setArguments(bundle);
+                        fragobj.show(fm, "fragment_edit_item");
 //                        items.remove(position);
 //                        itemsAdapter.notifyDataSetChanged();
 //                        writeItems();
-                        startActivityForResult(i, REQUEST_CODE);
+//                        startActivityForResult(i, REQUEST_CODE);
                     }
                 }
         );
 
     }
-    @Override
+/*    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             String name = data.getExtras().getString("updatedItem");
@@ -93,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 //            items.add(code, name);
         }
     }
-
+*/
 
 /*    private void readItems() {
         File filesDir = getFilesDir();
@@ -121,5 +132,11 @@ public class MainActivity extends AppCompatActivity {
         for (Products p : items) {
             dbHandler.addProduct(p);
         }
+    }
+    @Override
+    public void returnData(String body, String priority, long time, int code) {
+        items.set(code, new Products(body, priority, time));
+        itemsAdapter.notifyDataSetChanged();
+        writeItems();
     }
 }
