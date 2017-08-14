@@ -12,6 +12,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -28,19 +29,27 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
     ListView lvItems;
     static final int REQUEST_CODE = 1;
     MyDBHandler dbHandler;
+    TextView tvDuedate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tvDuedate = (TextView)findViewById(R.id.tvDuedate);
         lvItems = (ListView)findViewById(R.id.lvItems);
-//        items = new ArrayList<>();
+
         dbHandler = new MyDBHandler(this, null, null, 3);
         readItems();
-//        items.set(1, "test");
+
         itemsAdapter = new UsersAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
-//        items.add("first item");
+        tvDuedate.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {orderbyDuedate(v);
+                    }
+                }
+        );
+
         setupListViewListener();
     }
     public void onAddItem(View v) {
@@ -138,5 +147,10 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         items.set(code, new Products(body, priority, time));
         itemsAdapter.notifyDataSetChanged();
         writeItems();
+    }
+    public void orderbyDuedate(View view) {
+//        items.clear();
+        items = dbHandler.dbOrderbyDuedate();
+        itemsAdapter.notifyDataSetChanged();
     }
 }
