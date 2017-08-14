@@ -29,13 +29,13 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
     ListView lvItems;
     static final int REQUEST_CODE = 1;
     MyDBHandler dbHandler;
-    TextView tvDuedate;
+//    TextView tvDuedate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tvDuedate = (TextView)findViewById(R.id.tvDuedate);
+//        tvDuedate = (TextView)findViewById(R.id.tvDuedate);
         lvItems = (ListView)findViewById(R.id.lvItems);
 
         dbHandler = new MyDBHandler(this, null, null, 3);
@@ -43,13 +43,13 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
 
         itemsAdapter = new UsersAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
-        tvDuedate.setOnClickListener(
+/*        tvDuedate.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View v) {orderbyDuedate(v);
                     }
                 }
         );
-
+*/
         setupListViewListener();
     }
     public void onAddItem(View v) {
@@ -74,11 +74,6 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-//                        i.putExtra("pos", position);
-//                        i.putExtra("itemContent", items.get(position).get_productname());
-//                        i.putExtra("itemPriority", items.get(position).get_priority());
-//                        i.putExtra("itemDuedate", items.get(position).get_time());
                         Bundle bundle = new Bundle();
                         bundle.putInt("pos", position);
                         bundle.putString("itemContent", items.get(position).get_productname());
@@ -89,53 +84,16 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
                         FragmentManager fm = getSupportFragmentManager();
                         fragobj.setArguments(bundle);
                         fragobj.show(fm, "fragment_edit_item");
-//                        items.remove(position);
-//                        itemsAdapter.notifyDataSetChanged();
-//                        writeItems();
-//                        startActivityForResult(i, REQUEST_CODE);
                     }
                 }
         );
 
     }
-/*    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            String name = data.getExtras().getString("updatedItem");
-            String pri = data.getExtras().getString("updatedPriority");
-            long duedate = data.getExtras().getLong("updatedDuedate");
-            int code = data.getExtras().getInt("code", 0);
-//           if (items.get(code).get_time() <= duedate) {
-            items.set(code, new Products(name, pri, duedate));
-            itemsAdapter.notifyDataSetChanged();
-            writeItems();
-//            }
-//            items.add(code, name);
-        }
-    }
-*/
 
-/*    private void readItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-        } catch (IOException e) {
-            items = new ArrayList<String>();
-        }
-    }*/
     private void readItems() {
         items = dbHandler.databaseToList();
     }
-/*    private void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            FileUtils.writeLines(todoFile, items);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
+
     private void writeItems() {
         dbHandler.deleteAll();
         for (Products p : items) {
@@ -148,9 +106,9 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         itemsAdapter.notifyDataSetChanged();
         writeItems();
     }
-    public void orderbyDuedate(View view) {
+ /*   public void orderbyDuedate(View view) {
 //        items.clear();
         items = dbHandler.dbOrderbyDuedate();
         itemsAdapter.notifyDataSetChanged();
-    }
+    }*/
 }

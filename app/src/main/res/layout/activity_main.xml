@@ -60,6 +60,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="due date"
         android:id="@+id/tvDuedate"
+        android:clickable="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
