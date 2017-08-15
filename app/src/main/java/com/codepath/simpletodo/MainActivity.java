@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
     ArrayList<Products> items;
     UsersAdapter itemsAdapter;
     ListView lvItems;
-    static final int REQUEST_CODE = 1;
     MyDBHandler dbHandler;
 //    TextView tvDuedate;
 
@@ -46,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         String itemText = etNewItem.getText().toString();
         itemsAdapter.add(new Products(itemText, "1", System.currentTimeMillis()));
         etNewItem.setText("");
-        writeItems();
+        acitivtyToFragment(items.size() - 1);
+//        writeItems();
     }
     private void setupListViewListener() {
         lvItems.setOnItemLongClickListener (
@@ -63,16 +63,7 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("pos", position);
-                        bundle.putString("itemContent", items.get(position).get_productname());
-                        bundle.putString("itemPriority", items.get(position).get_priority());
-                        bundle.putLong("itemDuedate", items.get(position).get_time());
-                        EditItemDialogFragment fragobj = EditItemDialogFragment.newInstance("title");
-//                        EditItemDialogFragment fragobj = new EditItemDialogFragment();
-                        FragmentManager fm = getSupportFragmentManager();
-                        fragobj.setArguments(bundle);
-                        fragobj.show(fm, "fragment_edit_item");
+                        acitivtyToFragment(position);
                     }
                 }
         );
@@ -100,4 +91,16 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         items = dbHandler.dbOrderbyDuedate();
         itemsAdapter.notifyDataSetChanged();
     }*/
+    public void acitivtyToFragment(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("pos", position);
+        bundle.putString("itemContent", items.get(position).get_productname());
+        bundle.putString("itemPriority", items.get(position).get_priority());
+        bundle.putLong("itemDuedate", items.get(position).get_time());
+        EditItemDialogFragment fragobj = EditItemDialogFragment.newInstance("title");
+//                        EditItemDialogFragment fragobj = new EditItemDialogFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        fragobj.setArguments(bundle);
+        fragobj.show(fm, "fragment_edit_item");
+    }
 }
