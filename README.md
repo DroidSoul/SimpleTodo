@@ -4,7 +4,7 @@ SimpleTodo is an android app that allows building a todo list and basic todo ite
 
 Submitted by: Mark Huang
 
-Time spent: 3 hours spent in total
+Time spent: 30 hours spent in total
 
 ## User Stories
 
@@ -21,11 +21,14 @@ The following **optional** features are implemented:
 * [X] Add support for completion due dates for todo items (and display within listview item)
 * [X] Use a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) instead of new Activity for editing items
 * [X] Add support for selecting the priority of each todo item (and display in listview item)
-* [ ] Tweak the style improving the UI / UX, play with colors, images or backgrounds
+* [X] Tweak the style improving the UI / UX, play with colors, images or backgrounds
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [X] List anything else that you can get done to improve the app functionality!
+   1, Add alertdialog for long click, only delete when user clicks "ok"
+   2, when user adds item, it will go to dialogfragment to edit instead of adding some default priority/due_date
+
 
 ## Video Walkthrough
 
@@ -41,15 +44,17 @@ As part of your pre-work submission, please reflect on the app and answer the fo
 
 **Question 1:** "What are your reactions to the Android app development platform so far? Compare and contrast Android's approach to layouts and user interfaces in past platforms you've used."
 
-**Answer:** It is fun. More powerful and convenient.
+**Answer:** It is fun when it works. More powerful and convenient and lots of api.
 
 **Question 2:** "Take a moment to reflect on the `ArrayAdapter` used in your pre-work. How would you describe an adapter in this context and what is its function in Android? Why do you think the adapter is important? Explain the purpose of the `convertView` in the `getView` method of the `ArrayAdapter`."
 
-**Answer:** Adapter, like it is name, is a bridge between view and controller/model. It is important to seperate view from other functions.
+**Answer:** Adapter, like it is name, is a bridge between view and model. It is important to seperate view from other functions. ConvertView is to reuse any old views if available to improve performance (reduce amount of data in memory).
 
 ## Notes
 
 Describe any challenges encountered while building the app.
+
+Every new feature is a new challenge, UI/UX can be especially challenging. Google and stack overflow help a lot.
 
 ## License
 

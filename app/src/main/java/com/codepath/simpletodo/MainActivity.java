@@ -9,14 +9,17 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements EditItemDialogFragment.onFragmentResult{
+public class MainActivity extends AppCompatActivity implements EditItemDialogFragment.onFragmentResult, MyAlertDialogFragment.isYes {
     ArrayList<Products> items;
     UsersAdapter itemsAdapter;
     ListView lvItems;
     MyDBHandler dbHandler;
+    int pos;
 //    TextView tvDuedate;
 
     @Override
@@ -53,11 +56,13 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
                 new OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        items.remove(position);
-                        itemsAdapter.notifyDataSetChanged();
-                        writeItems();
+                        pos = position;
+                        FragmentManager fm = getSupportFragmentManager();
+                        MyAlertDialogFragment alertDialog = MyAlertDialogFragment.newInstance("alert");
+                        alertDialog.show(fm, "fragment_alert");
                         return true;
                     }
+
         });
         lvItems.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
@@ -102,5 +107,13 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         FragmentManager fm = getSupportFragmentManager();
         fragobj.setArguments(bundle);
         fragobj.show(fm, "fragment_edit_item");
+    }
+    @Override
+    public void clickYes(String str) {
+        if (str.equals("yes")) {
+            items.remove(pos);
+            itemsAdapter.notifyDataSetChanged();
+            writeItems();
+        }
     }
 }
