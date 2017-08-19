@@ -63,7 +63,8 @@
         android:id="@+id/textView3"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textColor="#0277bd" />
+        android:textColor="#0277bd"
+        android:onClick="sortPriority" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,6 +76,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColor="#0277bd" />
+        android:textColor="#0277bd"
+        android:onClick="sortTime" />
 
 </RelativeLayout>

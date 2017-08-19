@@ -2,9 +2,9 @@
 
 SimpleTodo is an android app that allows building a todo list and basic todo items management functionality including adding new items, editing and deleting an existing item.
 
-Submitted by: Mark Huang
+Submitted by: Mark(weixiao) Huang
 
-Time spent: 30 hours spent in total
+Time spent: 20 hours spent in total
 
 ## User Stories
 
@@ -27,14 +27,16 @@ The following **additional** features are implemented:
 
 * [X] List anything else that you can get done to improve the app functionality!
    1, Add alertdialog for long click, only delete when user clicks "ok"
-   2, when user adds item, it will go to dialogfragment to edit instead of adding some default priority/due_date
+   2, when user adds item, it will go to dialogfragment first to edit
+   3, Add support for sorting listview with priority or due date
 
+Future work: add due date notification and notes for each item if needed
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/LQCBxlo.gif' title='LQCBxlo' width=''369' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -44,17 +46,17 @@ As part of your pre-work submission, please reflect on the app and answer the fo
 
 **Question 1:** "What are your reactions to the Android app development platform so far? Compare and contrast Android's approach to layouts and user interfaces in past platforms you've used."
 
-**Answer:** It is fun when it works. More powerful and convenient and lots of api.
+**Answer:** I had some expperience developing android app preivously, but got to understand the framework and how things really work further this time. Android's approach and layouts and user interfaces are more intuitive, convenient and powerful, though constant updates required sometimes is time-consuming, but understandable.
 
 **Question 2:** "Take a moment to reflect on the `ArrayAdapter` used in your pre-work. How would you describe an adapter in this context and what is its function in Android? Why do you think the adapter is important? Explain the purpose of the `convertView` in the `getView` method of the `ArrayAdapter`."
 
-**Answer:** Adapter, like it is name, is a bridge between view and model. It is important to seperate view from other functions. ConvertView is to reuse any old views if available to improve performance (reduce amount of data in memory).
+**Answer:** Adapter, like it is name, is a bridge between view and model so that data source and view objects are connected. For ArrayAdapter, it basically selects and converts arraylist of items to list of view ojbects so that it has control the content as well as how to display it. It is important to seperate view from other functions so that it is just a UI element without data in it.  ConvertView is to reuse any old views that leaves screeon if available so that it can reduce memory usage and improve displaying performance.
 
 ## Notes
 
 Describe any challenges encountered while building the app.
 
-Every new feature is a new challenge, UI/UX can be especially challenging. Google and stack overflow help a lot.
+It is quite challenging to get a good UI/UX layout and also there are still plenty can be done. Datepicker/calender and what format to store date in SQlite took me some time to make it work properly. Overall Stack Overflow and Google help me a lot. 
 
 ## License
 

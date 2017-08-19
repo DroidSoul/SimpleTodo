@@ -9,9 +9,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class MainActivity extends AppCompatActivity implements EditItemDialogFragment.onFragmentResult, MyAlertDialogFragment.isYes {
@@ -20,37 +21,27 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
     ListView lvItems;
     MyDBHandler dbHandler;
     int pos;
-//    TextView tvDuedate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        tvDuedate = (TextView)findViewById(R.id.tvDuedate);
         lvItems = (ListView)findViewById(R.id.lvItems);
-
         dbHandler = new MyDBHandler(this, null, null, 3);
         readItems();
-
         itemsAdapter = new UsersAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
-/*        tvDuedate.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View v) {orderbyDuedate(v);
-                    }
-                }
-        );
-*/
         setupListViewListener();
     }
+    //listener for additem
     public void onAddItem(View v) {
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
         itemsAdapter.add(new Products(itemText, "1", System.currentTimeMillis()));
         etNewItem.setText("");
         acitivtyToFragment(items.size() - 1);
-//        writeItems();
     }
+    //listeners for listview
     private void setupListViewListener() {
         lvItems.setOnItemLongClickListener (
                 new OnItemLongClickListener() {
@@ -74,28 +65,25 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         );
 
     }
-
+    //read data from database
     private void readItems() {
         items = dbHandler.databaseToList();
     }
-
+    // update database
     private void writeItems() {
         dbHandler.deleteAll();
         for (Products p : items) {
             dbHandler.addProduct(p);
         }
     }
+    // implement callback method of dialog fragment to get data
     @Override
     public void returnData(String body, String priority, long time, int code) {
         items.set(code, new Products(body, priority, time));
         itemsAdapter.notifyDataSetChanged();
         writeItems();
     }
- /*   public void orderbyDuedate(View view) {
-//        items.clear();
-        items = dbHandler.dbOrderbyDuedate();
-        itemsAdapter.notifyDataSetChanged();
-    }*/
+    //send data from activity to dialog fragment
     public void acitivtyToFragment(int position) {
         Bundle bundle = new Bundle();
         bundle.putInt("pos", position);
@@ -103,11 +91,12 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         bundle.putString("itemPriority", items.get(position).get_priority());
         bundle.putLong("itemDuedate", items.get(position).get_time());
         EditItemDialogFragment fragobj = EditItemDialogFragment.newInstance("title");
-//                        EditItemDialogFragment fragobj = new EditItemDialogFragment();
+//      EditItemDialogFragment fragobj = new EditItemDialogFragment();
         FragmentManager fm = getSupportFragmentManager();
         fragobj.setArguments(bundle);
         fragobj.show(fm, "fragment_edit_item");
     }
+    //implement callabck method of alert dialog fragment
     @Override
     public void clickYes(String str) {
         if (str.equals("yes")) {
@@ -115,5 +104,35 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
             itemsAdapter.notifyDataSetChanged();
             writeItems();
         }
+    }
+    //sort list based on due date
+    public void sortTime(View view) {
+        Collections.sort(items, new Comparator<Products>() {
+            @Override
+            public int compare(Products o1, Products o2) {
+                if (o1.time <= o2.time) {
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+            }
+        });
+        itemsAdapter.notifyDataSetChanged();
+    }
+    //sort list based on priority
+    public void sortPriority(View view) {
+        Collections.sort(items, new Comparator<Products>() {
+            @Override
+            public int compare(Products o1, Products o2) {
+                if (Integer.valueOf(o1.priority) <= Integer.valueOf(o2.priority)) {
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+            }
+        });
+        itemsAdapter.notifyDataSetChanged();
     }
 }
