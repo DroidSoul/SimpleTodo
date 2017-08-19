@@ -50,7 +50,7 @@ As part of your pre-work submission, please reflect on the app and answer the fo
 
 **Question 2:** "Take a moment to reflect on the `ArrayAdapter` used in your pre-work. How would you describe an adapter in this context and what is its function in Android? Why do you think the adapter is important? Explain the purpose of the `convertView` in the `getView` method of the `ArrayAdapter`."
 
-**Answer:** Adapter, like it is name, is a bridge between view and model so that data source and view objects are connected. For ArrayAdapter, it basically selects and converts arraylist of items to list of view ojbects so that it has control the content as well as how to display it. It is important to seperate view from other functions so that it is just a UI element without data in it.  ConvertView is to reuse any old views that leaves screeon if available so that it can reduce memory usage and improve displaying performance.
+**Answer:** Adapter, like it is name, is a bridge between view and model so that data source and view objects are connected. For ArrayAdapter, it basically selects and converts arraylist of items to list of view ojbects so that it can control the content as well as how to display it. It is important to seperate view from other functions so that it is just a UI element without data in it.  ConvertView is to reuse any old views that leaves screen if available so that it can reduce memory usage and improve displaying performance.
 
 ## Notes
 
