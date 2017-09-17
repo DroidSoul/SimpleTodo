@@ -36,7 +36,7 @@ Future work: add due date notification and notes for each item if needed
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/LQCBxlo.gif' title='LQCBxlo' width=''369' />
+<img src='https://i.imgur.com/LQCBxlo.gif' title='LQCBxlo' width='369' alt='simpletodo'/>
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
