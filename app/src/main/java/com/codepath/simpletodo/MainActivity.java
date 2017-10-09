@@ -1,6 +1,10 @@
 package com.codepath.simpletodo;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
     ListView lvItems;
     MyDBHandler dbHandler;
     int pos;
+    Notification.Builder notificaiton;
+    private static final int uniqueID = 9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         lvItems = (ListView)findViewById(R.id.lvItems);
         dbHandler = new MyDBHandler(this, null, null, 3);
         readItems();
+//        duedateNotification();
         itemsAdapter = new UsersAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
@@ -90,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         bundle.putString("itemContent", items.get(position).get_productname());
         bundle.putString("itemPriority", items.get(position).get_priority());
         bundle.putLong("itemDuedate", items.get(position).get_time());
-        EditItemDialogFragment fragobj = EditItemDialogFragment.newInstance("title");
-//      EditItemDialogFragment fragobj = new EditItemDialogFragment();
+ //       EditItemDialogFragment fragobj = EditItemDialogFragment.newInstance("title");
+      EditItemDialogFragment fragobj = new EditItemDialogFragment();
         FragmentManager fm = getSupportFragmentManager();
         fragobj.setArguments(bundle);
         fragobj.show(fm, "fragment_edit_item");
@@ -135,4 +142,23 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         });
         itemsAdapter.notifyDataSetChanged();
     }
+/*    public void duedateNotification() {
+        for (Products product : items) {
+            if (product.time - System.currentTimeMillis() <= 3600 * 24 * 1000) {
+                notificaiton.setSmallIcon(R.mipmap.ic_launcher);
+                notificaiton.setTicker("This is the ticker");
+                notificaiton.setWhen(System.currentTimeMillis());
+                notificaiton.setContentTitle("Here is the title");
+                notificaiton.setContentText("I am the body text of your notification");
+
+                Intent intent = new Intent(this, MainActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                notificaiton.setContentIntent(pendingIntent);
+
+                //issue/send notification
+                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                nm.notify(uniqueID, notificaiton.build());
+           }
+      }
+    }*/
 }
